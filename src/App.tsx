@@ -4,11 +4,11 @@ import axios from "axios";
 export default function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Namaste! Welcome to Ramaera Hosting. How can I help?", sender: "bot" }
+    { text: "Namaste! Welcome to Ramaera Hosting. How can I help you today?", sender: "bot" }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const API_URL = "http://localhost:5000/chat";
 
@@ -34,7 +34,7 @@ export default function App() {
     } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { text: "⚠ Server unreachable. Please try again.", sender: "bot" }
+        { text: "Server unreachable. Please try again.", sender: "bot" }
       ]);
     } finally {
       setLoading(false);
@@ -42,122 +42,172 @@ export default function App() {
   };
 
   return (
-    <>
-      {/* Floating Button */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center max-w-3xl mx-auto space-y-6">
+          <div className="inline-block">
+            <div className="text-5xl font-bold bg-gradient-to-r from-ramaera-blue via-ramaera-indigo to-cyan-600 bg-clip-text text-transparent animate-gradient">
+              Ramaera Hosting
+            </div>
+          </div>
+          <p className="text-xl text-gray-600 font-light">
+            Premium Cloud Solutions with AI-Powered Support
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center text-sm text-gray-500">
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-gray-200/50 shadow-sm">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse-slow" />
+              <span>99.9% Uptime</span>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-gray-200/50 shadow-sm">
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse-slow" />
+              <span>24/7 AI Support</span>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-gray-200/50 shadow-sm">
+              <div className="w-2 h-2 bg-violet-500 rounded-full animate-pulse-slow" />
+              <span>Enterprise Ready</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 rounded-full shadow-xl hover:scale-110 transition-all z-50 flex items-center justify-center"
+        className="chat-fab group"
+        aria-label="Open chat"
       >
-        <svg className="w-7 h-7" fill="none" stroke="white" viewBox="0 0 24 24">
-          <path
-            strokeWidth={2}
-            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.25-.95L3 20l1.5-3.8C3.5 15 3 13.5 3 12c0-4.42 4.03-8 9-8s9 3.58 9 8z"
-          />
-        </svg>
+        <div className="absolute inset-0 bg-gradient-to-r from-ramaera-blue to-ramaera-indigo rounded-full blur-xl opacity-60 group-hover:opacity-80 transition-opacity animate-pulse-glow" />
+        <div className="relative z-10">
+          {isOpen ? (
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+              />
+            </svg>
+          )}
+        </div>
       </button>
 
-      {/* Chat Window */}
       {isOpen && (
-        <div
-          className="
-            fixed bottom-24 right-6 
-            w-[370px] max-w-[95vw] 
-            h-[520px] max-h-[80vh]
-            bg-white/20 backdrop-blur-xl border border-white/30 
-            shadow-2xl rounded-3xl overflow-hidden 
-            z-50 animate-fadeIn
-          "
-        >
-          {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 flex justify-between items-center shadow-lg">
+        <div className="chat-window">
+          <div className="chat-header">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-full bg-white/20 border border-white/40 flex items-center justify-center text-xl font-bold">
-                R
+              <div className="relative">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-ramaera-blue to-ramaera-indigo flex items-center justify-center text-white text-xl font-bold shadow-lg">
+                  R
+                </div>
+                <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white shadow-sm animate-pulse" />
               </div>
-              <div>
-                <div className="font-semibold text-lg">Ramaera Support</div>
-                <div className="text-xs opacity-90 flex items-center gap-1">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  Online
+              <div className="flex-1">
+                <div className="font-semibold text-lg text-white">Ramaera AI Assistant</div>
+                <div className="text-xs text-white/80 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full animate-pulse" />
+                  <span>Active now</span>
                 </div>
               </div>
             </div>
 
             <button
               onClick={() => setIsOpen(false)}
-              className="px-2 py-1 hover:bg-white/20 rounded"
+              className="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-white/10 transition-colors text-white/90 hover:text-white"
+              aria-label="Close chat"
             >
-              ✕
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           </div>
 
-          {/* Chat Body */}
-          <div
-            className="
-              flex-1 p-4 overflow-y-auto 
-              bg-white/10 backdrop-blur-xl 
-              scroll-smooth space-y-4 
-            "
-          >
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`flex ${
-                  msg.sender === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
+          <div className="chat-body">
+            <div className="space-y-4">
+              {messages.map((msg, i) => (
                 <div
-                  className={`max-w-[75%] px-4 py-2 rounded-2xl shadow-md text-sm
-                ${
-                  msg.sender === "user"
-                    ? "bg-gradient-to-r from-indigo-500 to-blue-600 text-white"
-                    : "bg-white/80 backdrop-blur-md text-gray-900 border border-gray-200/60"
-                }`}
+                  key={i}
+                  className={`flex animate-message-in ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                  style={{ animationDelay: `${i * 50}ms` }}
                 >
-                  {msg.text}
+                  {msg.sender === "bot" && (
+                    <div className="flex-shrink-0 w-8 h-8 rounded-xl bg-gradient-to-br from-ramaera-light to-ramaera-blue/20 flex items-center justify-center text-xs font-bold text-ramaera-blue mr-2 shadow-sm">
+                      AI
+                    </div>
+                  )}
+                  <div
+                    className={`message-bubble ${
+                      msg.sender === "user" ? "message-user" : "message-bot"
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
 
-            {loading && (
-              <div className="flex justify-start">
-                <div className="bg-white/80 px-3 py-2 rounded-xl shadow flex gap-1">
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100"></span>
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200"></span>
+              {loading && (
+                <div className="flex justify-start animate-message-in">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-xl bg-gradient-to-br from-ramaera-light to-ramaera-blue/20 flex items-center justify-center text-xs font-bold text-ramaera-blue mr-2 shadow-sm">
+                    AI
+                  </div>
+                  <div className="message-bot">
+                    <div className="flex items-center gap-1.5">
+                      <span className="typing-dot" />
+                      <span className="typing-dot" style={{ animationDelay: "0.2s" }} />
+                      <span className="typing-dot" style={{ animationDelay: "0.4s" }} />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            <div ref={messagesEndRef} />
+              <div ref={messagesEndRef} />
+            </div>
           </div>
 
-          {/* Input Area */}
-          <div className="p-4 bg-white/30 backdrop-blur-xl border-t border-white/20">
+          <div className="chat-footer">
             <div className="flex gap-2">
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                placeholder="Type a message..."
-                className="flex-1 px-4 py-2 rounded-xl bg-white/70 border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                placeholder="Ask me anything..."
+                className="chat-input"
+                disabled={loading}
               />
 
               <button
                 onClick={sendMessage}
-                disabled={loading}
-                className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl text-white shadow hover:scale-105 transition disabled:opacity-50"
+                disabled={loading || !input.trim()}
+                className="send-button group"
+                aria-label="Send message"
               >
-                ➤
+                <svg
+                  className="w-5 h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                  />
+                </svg>
               </button>
             </div>
-            <p className="text-xs text-center text-white/70 mt-2">
-              Powered by <strong>Gemini 2.5</strong>
+            <p className="text-xs text-center text-gray-500 mt-3 flex items-center justify-center gap-1.5">
+              <span>Powered by</span>
+              <span className="font-semibold bg-gradient-to-r from-ramaera-blue to-ramaera-indigo bg-clip-text text-transparent">
+                Gemini 2.5
+              </span>
             </p>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
